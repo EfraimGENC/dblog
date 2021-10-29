@@ -1,21 +1,32 @@
 {% extends "layout.html" %}
 {% load i18n %}
+{% load humanize %}
+{% load url_replace %}
+{% load icons %}
 
 {% block title %}{% trans "Blog" %}{% endblock title %}
 
+{% block page_title %}{% trans "Blog" %}{% endblock page_title %}
+
+{% block ordering %}
+{% for value, label in ordering_form.order_by.field.choices %}
+<a class="dropdown-item" href="?{% url_replace request 'order_by' value %}"><i class="{% get_ordering_icon_class value %}"></i> {{ label }}</a>
+{% endfor %}
+{% endblock ordering %}
+
 {% block body %}
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<div class="row row-cols-1 row-cols-md-4 g-2">
   {% for post in post_list %}
   <div class="col">
     <div class="card h-100">
-      <img src="{{ post.cover.url }}" class="card-img-top" alt="{{ post.title }}">
+      <img src="{% if post.cover %}{{ post.cover.url }}{% else %}https://dummyimage.com/200x200/dedede/000000.jpg&text=No+Image{% endif %}" class="card-img-top" alt="{{ post.title }}">
       <div class="card-body">
         <h5 class="card-title">{{ post.title }}</h5>
-        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text">{{ post.content|truncatechars:150 }}</p>
       </div>
       <div class="card-footer">
-        <small class="text-muted">{{ post.created_at }}</small>
+        <small class="text-muted">{{ post.created_at|naturaltime }}</small>
       </div>
     </div>
   </div>
