@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Project's Apps
     'apps.account',
     'apps.home',
+    'apps.blog',
 
     # 3'th Part Apps
     'phonenumber_field',
