@@ -1,7 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import DetailView
+from contrib.views.generic import DblogListView
 from .models import Profile
 # Create your views here.
-class ProfileDetail(DetailView):
+class ProfileDetail(DblogListView):
     model = Profile
-    template_name='profile_detail.html'
