@@ -1,0 +1,63 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-29 09:06+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/account/models.py:25
+msgid "Profile Picture"
+msgstr ""
+
+#: apps/account/models.py:36
+msgid "Phone"
+msgstr ""
+
+#: apps/account/models.py:42
+msgid "Location"
+msgstr ""
+
+#: apps/account/models.py:49
+msgid "Birthday"
+msgstr ""
+
+#: contrib/models/base.py:12
+msgid "UUID"
+msgstr ""
+
+#: contrib/models/base.py:19
+msgid "Update Date"
+msgstr ""
+
+#: contrib/models/base.py:25
+msgid "Create Date"
+msgstr ""
+
+#: contrib/models/base.py:41
+msgid "Latest"
+msgstr ""
+
+#: contrib/models/base.py:42
+msgid "Earliest"
+msgstr ""
+
+#: dblog/settings.py:156
+msgid "Turkish"
+msgstr ""
+
+#: dblog/settings.py:157
+msgid "English"
+msgstr ""
