@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     # 3'th Part Apps
     'phonenumber_field',
     'imagekit',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -182,3 +185,21 @@ SITE_ID = 1
 # EMAIL_USE_TLS=False
 # EMAIL_USE_SSL=True
 # DEFAULT_FROM_EMAIL = 'Name <noreply@domain.com>'
+
+
+# REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.DjangoModelPermissions',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter',
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
+}

@@ -7,6 +7,7 @@ from apps.blog.views import PostList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),
     path('account', include('apps.account.urls')),
     path("blog/", PostList.as_view(), name="post_list"),
     path("@<slug:username>/", ProfileDetail.as_view(), name="profile")
