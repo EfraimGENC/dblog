@@ -80,4 +80,4 @@ class Profile(AbstractUser, BaseModel):
             self.last_name = ''
 
     def get_absolute_url(self):
-        return reverse("account:profile_detail", kwargs={"pk": self.username})
+        return reverse("profile_detail", kwargs={"username": self.username})

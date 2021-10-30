@@ -66,7 +66,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'dblog.urls'
+ROOT_URLCONF = 'dblog.urls.main'
 
 TEMPLATES = [
     {
@@ -194,8 +194,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.DjangoModelPermissions',
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'rest_framework.filters.OrderingFilter',
