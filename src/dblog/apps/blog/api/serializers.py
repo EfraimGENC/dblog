@@ -49,13 +49,12 @@ class TagSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Tag
         fields = ('uuid', 'name')
-        read_only_fields = ('id', 'uuid')
 
 
 class PostSerializer(DynamicFieldsModelSerializer):
 
     tags = TagSerializer(many=True, fields=['name'])
-    profile = ProfileSerializer(fields=['uuid', 'username', 'url'])
+    profile = ProfileSerializer(fields=['uuid', 'username', 'url'], read_only=True)
     url = serializers.HyperlinkedIdentityField(
         view_name='api:post-detail',
         lookup_field='uuid'
@@ -64,7 +63,7 @@ class PostSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Post
         fields = ('uuid', 'title', 'cover', 'content', 'created_at', 'updated_at', 'profile', 'tags', 'url')
-        read_only_fields = ('id', 'uuid', 'profile', 'created_at')
+        read_only_fields = ('profile',)
 
     @transaction.atomic
     def create(self, validated_data):

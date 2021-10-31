@@ -1,23 +1,17 @@
 import django_filters
-from rest_framework import status, viewsets, filters
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.response import Response
 from django_filters.rest_framework import FilterSet
 from django.shortcuts import get_object_or_404
-from rest_framework.serializers import Serializer
-from ..models import Post, Tag
-from .serializers import TagSerializer, PostSerializer, ProfileSerializer
-from django.contrib.auth import get_user_model
-User = get_user_model()
+from ..models import Post
+from .serializers import PostSerializer
+
 
 class PostViewSet(viewsets.ModelViewSet):
 
     class Filter(FilterSet):
-        # price__gt = django_filters.NumberFilter(field_name='price',
-        #                                         lookup_expr='gt')
-        # price__lt = django_filters.NumberFilter(field_name='price',
-        #                                         lookup_expr='lt')
         username = django_filters.CharFilter(field_name="profile__username",
                                              lookup_expr='exact')
 
@@ -25,7 +19,7 @@ class PostViewSet(viewsets.ModelViewSet):
             model = Post
             fields = {
                 'uuid': ['exact'],
-                'title': ['exact'],
+                'title': ['contains'],
             }
 
 
@@ -93,28 +87,3 @@ class PostViewSet(viewsets.ModelViewSet):
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    model = User
-    queryset = model.objects.all()
-    permission_classes = [IsAuthenticated, DjangoModelPermissions]
-    serializer_class = ProfileSerializer
-    ordering = ['-id']
-    ordering_fields = ['id', 'username']
-    search_fields = ['first_name', 'last_name', 'username', 'email']
-
-
-class TagViewSet(viewsets.ModelViewSet):
-    model = Tag
-    queryset = model.objects.all()
-    lookup_field = 'uuid'
-    permission_classes = [IsAuthenticated, DjangoModelPermissions]
-    serializer_class = TagSerializer
-    ordering = ['-id']
-    ordering_fields = ['id', 'name']
-    search_fields = ['name', 'uuid']
-
-    def get_queryset(self, manager='objects', **kwargs):
-        kwargs['product__in'] = Post.objects.filter(user=self.request.user)
-        return getattr(self.model, manager).filter(**kwargs)

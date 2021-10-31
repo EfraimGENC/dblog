@@ -1,6 +1,7 @@
 asgiref==3.4.1
 Django==3.2.8
 django-appconf==1.0.5
+django-environ==0.8.1
 django-filter==21.1
 django-imagekit==4.0.2
 django-phonenumber-field==5.2.0
