@@ -47,13 +47,7 @@ class PostViewSet(viewsets.ModelViewSet):
         return post
 
     def get_serializer_class(self):
-        if self.action in ['list']:
-            return self.serializer_class
-        elif self.action in ['create']:
-            return self.serializer_class
-        elif self.action in ['retrieve', 'update', 'partial_update']:
-            return self.serializer_class
-        elif self.action in ['destroy']:
+        if not self.action in ['list', 'retrieve']:
             return self.serializer_class
         return super().get_serializer_class()
 
@@ -75,14 +69,14 @@ class PostViewSet(viewsets.ModelViewSet):
 
     # Extra Actions
 
-    @action(detail=False, methods=['get'], name='Koko Jambo')
-    def koko_jambo(self, request):
-        posts = self.get_queryset()
+    @action(detail=False, methods=['get'], name='My Custom Action')
+    def my_custom_action(self, request):
+        posts = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(posts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @koko_jambo.mapping.post
-    def add_koko_jambo(self, request):
+    @my_custom_action.mapping.post
+    def add_my_custom_action(self, request):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
