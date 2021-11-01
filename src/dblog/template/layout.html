@@ -17,27 +17,13 @@
     {% include 'includes/header.html' %}
 
     <div class="container my-3  pb-5">
-      <div class="row pb-2 mb-3 border-bottom">
-        <div class="col-8">
-          <h1 class="m-0">{% block page_title %}{% endblock page_title %}</h1>
-        </div>
-        <div class="col-4 d-flex justify-content-end align-items-end">
-          <div class="btn-group">
-            <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              {% trans "Sırala" %}
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              {% block ordering %}{% endblock ordering %}
-            </ul>
-          </div>
-        </div>
-      </div>
 
       <div class="row">
         <div class="col-12">
           {% block body %}{% endblock body %}
         </div>
       </div>
+
     </div>
     {% include 'includes/footer.html' %}
 

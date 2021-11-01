@@ -15,3 +15,17 @@ class OrderingForm(forms.Form):
         label=_('Order'),
         required=True,
     )
+
+
+class SearchForm(forms.Form):
+    def __init__(self, search_param, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+        self.fields[search_param] = forms.CharField(
+                                            label=_('Arama'),
+                                            max_length=127,
+                                            widget=forms.TextInput(attrs={
+                                                'class': 'form-control me-2',
+                                                'placeholder': _('Post Bul'),
+                                                'aria-label': 'Search',
+                                            })
+                                        )

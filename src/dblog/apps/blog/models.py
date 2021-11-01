@@ -37,7 +37,7 @@ class Post(BaseModel):
     profile = models.ForeignKey(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
 
-    cover = ProcessedImageField(verbose_name=_("Cover"),
+    cover = ProcessedImageField(verbose_name=_("Kapak"),
                                 upload_to=handle_cover_file,
                                 default='',
                                 processors=[ResizeToFill(1080, 1080)],

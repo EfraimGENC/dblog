@@ -1,15 +1,19 @@
 from django.contrib.auth.mixins import (
     LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin)
 from django.contrib.auth.views import redirect_to_login
+from django.contrib import messages
+from django.contrib.postgres import search
+from django.contrib.postgres.search import (
+    TrigramSimilarity, SearchQuery, SearchRank, SearchVector)
 from typing import Dict, Any, List
 from django.utils.translation import ugettext_lazy as _
-from django.contrib import messages
 from django.shortcuts import redirect
 from django.utils.encoding import smart_str
-from django.db.models import QuerySet, Model
+from django.db.models import QuerySet, Model, Q
 from django.core.exceptions import ImproperlyConfigured
-from contrib.forms.generic import OrderingForm
+from contrib.forms.generic import OrderingForm, SearchForm
 from contrib.utils import is_valid_uuid, validate_uuids
+
 
 class MemberMixin(LoginRequiredMixin,
                   UserPassesTestMixin,
@@ -63,9 +67,9 @@ class BulkEditMixin:
             return self.bulkedit_model
         return self.model
 
-    def get_bulkedit_queryset(self, uuids: List[str], manager='publish', **kwargs) -> QuerySet:
+    def get_bulkedit_queryset(self, uuids: List[str], manager='objects', **kwargs) -> QuerySet:
         """
-        Default olarak publish, yoksa actives managerı kullanılır.
+        Default olarak publish, yoksa objects managerı kullanılır.
         Değiştirmek için bu methodu manager tanımı yapıp owerride etmeniz kafi.
         Ekstra lookup'ları kwargs içerisine koyabilirsiniz.
         Sonunda super ile parent metodu dönmeyi unutmayın!
@@ -81,7 +85,7 @@ class BulkEditMixin:
 
         if self.bulkedit_model != self.model:
             return getattr(self.get_bulkedit_model(), manager, 
-                self.get_bulkedit_model().actives).filter(**kwargs)
+                self.get_bulkedit_model().objects).filter(**kwargs)
 
         return self.get_queryset().filter(**kwargs)
 
@@ -166,3 +170,21 @@ class OrderingMixin:
                 queryset = queryset.order_by(*self.ordering_queries[lookup])
                 self.order_by = lookup
         return queryset
+
+
+class SearchingMixin:
+    search_param: str = 'search'
+    search_fields: List[str] = None
+
+    def apply_search(self, queryset: QuerySet):
+        self.search_form = SearchForm(self.search_param, self.request.GET or None)
+        if not self.search_form.is_valid():
+            return queryset
+
+        q = self.search_form.cleaned_data.get(self.search_param, None)
+
+        filters = Q()
+        for f in self.search_fields:
+            filters |= Q(**{f: q})
+
+        return queryset.filter(filters)

@@ -29,7 +29,9 @@
         </li>
       </ul>
       <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="{% trans 'Post Bul' %}" aria-label="Search">
+        {% for field in search_form %}
+        {{ field }}
+        {% endfor %}
         <button class="btn btn-outline-success" type="submit">{% trans "Ara" %}</button>
       </form>
     </div>

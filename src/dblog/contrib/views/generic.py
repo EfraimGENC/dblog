@@ -8,14 +8,15 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db.models import QuerySet
-from contrib.forms.generic import DummyForm
+from contrib.forms.generic import DummyForm, SearchForm
 from contrib.views.mixin import MemberMixin
-from contrib.views.mixin import BulkEditMixin, OrderingMixin
+from contrib.views.mixin import BulkEditMixin, OrderingMixin, SearchingMixin
 
 
 class DblogListView(MemberMixin,
                      FormMixin,
                      OrderingMixin,
+                     SearchingMixin,
                      BulkEditMixin,
                      ListView):
 
@@ -63,7 +64,7 @@ class DblogListView(MemberMixin,
         queryset = getattr(self.model, manager).filter(**extra_lookups)
 
         # Ordering
-        queryset = self.apply_order(queryset)
+        queryset = self.apply_search(self.apply_order(queryset))
 
         return queryset
 
@@ -72,6 +73,9 @@ class DblogListView(MemberMixin,
 
         kwargs.setdefault('ordering_form', getattr(
             self, 'ordering_form', self.ordering_form_class(self.model)))
+
+        kwargs.setdefault('search_form', getattr(
+            self, 'search_form', SearchForm(self.search_param)))
 
         kwargs.setdefault('order_by', self.order_by)
 
